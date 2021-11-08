@@ -1,13 +1,8 @@
-import { useEffect, useState } from "react";
 import Head from "next/head";
 import "antd/dist/antd.css";
-import firebaseApp from "../firebase/firebase-config";
-import { getAuth } from "firebase/auth";
-import { login } from "../actions/auth";
 import { useSelector } from "react-redux";
 import SignupForm from "../components/login/SignupForm";
 import SpinLoading from "../components/spin/spinLoading";
-import { finishLogged, startLogged } from "../actions/logged";
 import withAuthPublic from "../components/withAuthPublic";
 
 const Home = () => {
