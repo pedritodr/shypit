@@ -1,6 +1,8 @@
 import { useSelector } from "react-redux";
+import ContentDashboard from "../components/dashboard/ContentDashboard";
 import SpinLoading from "../components/spin/spinLoading";
 import withAuth from "../components/withAuth";
+import LayoutApp from "../layouts/LayoutApp";
 
 const Dashboard = () => {
   const { loggedIn } = useSelector((state) => state.logged);
@@ -12,7 +14,13 @@ const Dashboard = () => {
       </>
     );
   } else {
-    return <div>##### Congratulations! You are authorized! ######"</div>;
+    return (
+      <>
+        <LayoutApp>
+          <ContentDashboard />
+        </LayoutApp>
+      </>
+    );
   }
 };
 
