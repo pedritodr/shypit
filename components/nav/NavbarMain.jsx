@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Menu } from "antd";
 import {
   HomeOutlined,
@@ -7,6 +8,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { changeMenu } from "../../actions/nav";
+import { startLogout } from "../../actions/auth";
 
 const NavbarMain = () => {
   const dispatch = useDispatch();
@@ -16,23 +18,29 @@ const NavbarMain = () => {
     dispatch(changeMenu(e.key));
   };
 
+  const handleLogout = () => {
+    dispatch(startLogout());
+  };
+
   return (
     <>
       <Menu onClick={handleClick} selectedKeys={[menu]} mode="horizontal">
         <Menu.Item key="inicio" icon={<HomeOutlined />}>
-          Inicio
+          <Link href="/dashboard">
+            <a>Inicio</a>
+          </Link>
         </Menu.Item>
 
         <Menu.Item key="cotizador" icon={<CalculatorOutlined />}>
-          <a
-            href="https://ant.design"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Cotizador
-          </a>
+          <Link href="/cotizador">
+            <a>Cotizador</a>
+          </Link>
         </Menu.Item>
-        <Menu.Item key="loginOut" icon={<LoginOutlined />}>
+        <Menu.Item
+          key="loginOut"
+          icon={<LoginOutlined />}
+          onClick={handleLogout}
+        >
           <a>Cerrar sesión</a>
         </Menu.Item>
       </Menu>

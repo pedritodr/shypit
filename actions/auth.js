@@ -1,8 +1,10 @@
+import { Router } from "Next/router";
 import firebaseApp from "../firebase/firebase-config";
 import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import Swal from "sweetalert2";
 import { types } from "../types/types";
 import { finishLoading, startLoading } from "./ui";
+import { changeMenu } from "./nav";
 
 const auth = getAuth(firebaseApp);
 
@@ -13,6 +15,7 @@ export const startLoginEmailPassword = (email, password) => {
       .then(({ user }) => {
         dispatch(finishLoading());
         dispatch(login(user.uid, user.displayName));
+        dispatch(changeMenu("inicio"));
       })
       .catch((error) => {
         console.log(error);
