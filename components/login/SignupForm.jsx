@@ -1,11 +1,17 @@
 
 import { Form, Input, Button, Row, Col } from "antd";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./SingupForm.module.css";
+import {startLoginEmailPassword  } from "../../actions/auth";
 
 export default function SignupForm() {
 
-  const onFinish = (values) => {
-    console.log('Success:', values);
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.ui);
+
+  const onFinish = ({email,password}) => {
+    dispatch(startLoginEmailPassword(email, password));
+    
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -41,13 +47,15 @@ export default function SignupForm() {
       <Form.Item
         label="Password"
         name="password"
-        rules={[{ required: true, message: 'Please input your password!' }]}
+        rules={[{ required: true, message: 'Please input your password!' },
+        { min: 6, message: "Please enter a password greater than 5 characters!" }
+      ]}
       >
         <Input.Password />
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" disabled={loading}>
           Submit
         </Button>
       </Form.Item>

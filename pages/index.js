@@ -1,8 +1,41 @@
+import { useEffect, useState } from "react";
 import Head from "next/head";
+import { Spin } from "antd";
 import "antd/dist/antd.css";
+import firebaseApp from "../firebase/firebase-config";
+import { getAuth } from "firebase/auth";
+import { login } from "../actions/auth";
+import { useDispatch } from "react-redux";
 import SignupForm from "../components/login/SignupForm";
+import styles from "../styles/Home.module.css";
 
 export default function Home() {
+  const dispatch = useDispatch();
+  const [checking, setChecking] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const auth = getAuth(firebaseApp);
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user?.uid) {
+        dispatch(login(user.uid, user.displayName));
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+      setChecking(false);
+    });
+  }, [dispatch, setChecking, setIsLoggedIn]);
+  if (checking) {
+    return (
+      <>
+        <div className={styles.containerMain}>
+          <div className={styles.containerSecundary}>
+            <Spin size="large" />
+          </div>
+        </div>
+      </>
+    );
+  }
   return (
     <div>
       <Head>

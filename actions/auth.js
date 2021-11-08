@@ -1,6 +1,6 @@
 import firebaseApp from "../firebase/firebase-config";
 import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
-
+import Swal from "sweetalert2";
 import { types } from "../types/types";
 import { finishLoading, startLoading } from "./ui";
 
@@ -16,6 +16,11 @@ export const startLoginEmailPassword = (email, password) => {
       })
       .catch((error) => {
         console.log(error);
+        Swal.fire(
+          "Notificación",
+          "El usuario o la contraseña no son correctos",
+          "error"
+        );
         dispatch(finishLoading());
       });
   };
