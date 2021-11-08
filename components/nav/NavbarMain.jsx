@@ -4,23 +4,21 @@ import {
   LoginOutlined,
   CalculatorOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
-
-const { SubMenu } = Menu;
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { changeMenu } from "../../actions/nav";
 
 const NavbarMain = () => {
-  const [state, setState] = useState({
-    current: "inicio",
-  });
+  const dispatch = useDispatch();
+  const { menu } = useSelector((state) => state.nav);
 
   const handleClick = (e) => {
-    setState({ current: e.key });
+    dispatch(changeMenu(e.key));
   };
-  const { current } = state;
 
   return (
     <>
-      <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
+      <Menu onClick={handleClick} selectedKeys={[menu]} mode="horizontal">
         <Menu.Item key="inicio" icon={<HomeOutlined />}>
           Inicio
         </Menu.Item>
@@ -35,13 +33,7 @@ const NavbarMain = () => {
           </a>
         </Menu.Item>
         <Menu.Item key="loginOut" icon={<LoginOutlined />}>
-          <a
-            href="https://ant.design"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Cerrar sesión
-          </a>
+          <a>Cerrar sesión</a>
         </Menu.Item>
       </Menu>
     </>

@@ -25,7 +25,6 @@ const Dashboard = () => {
 };
 
 Dashboard.getInitialProps = () => {
-  console.info("##### Congratulations! You are authorized! ######");
   return {};
 };
 
