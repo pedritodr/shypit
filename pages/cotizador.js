@@ -25,8 +25,4 @@ const Cotizador = () => {
   }
 };
 
-Cotizador.getInitialProps = () => {
-  return {};
-};
-
 export default withAuth(Cotizador);

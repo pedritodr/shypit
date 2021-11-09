@@ -1,7 +1,7 @@
 import { types } from "../types/types";
 
 const stateInitial = {
-  heigth: "",
+  height: "",
   width: "",
   origen: null,
   destino: null,
@@ -14,7 +14,7 @@ export const formReqPriceReducer = (state = stateInitial, action) => {
   switch (action.type) {
     case types.formRequest:
       return {
-        heigth: action.payload.heigth,
+        height: action.payload.height,
         width: action.payload.width,
         origen: action.payload.origen,
         destino: action.payload.destino,
@@ -25,7 +25,7 @@ export const formReqPriceReducer = (state = stateInitial, action) => {
 
     case types.formResult:
       return {
-        heigth: action.payload.heigth,
+        height: action.payload.height,
         width: action.payload.width,
         origen: action.payload.origen,
         destino: action.payload.destino,

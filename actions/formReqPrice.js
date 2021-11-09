@@ -1,7 +1,11 @@
 import axios from "axios";
 import { types } from "../types/types";
+import { finishLoading } from "./ui";
+import { message } from "antd";
+import { changeCotizador } from "./navCot";
+import { useSelector } from "react-redux";
 
-export const startFormReqPrice = (data) => {
+export const startFormReqPrice = (state, data, current) => {
   return async (dispatch) => {
     try {
       const response = await axios.post(
@@ -18,16 +22,19 @@ export const startFormReqPrice = (data) => {
         }
       );
 
-      if (response.status === 200) {
-        console.log(response.data);
-        dispatch(resultPrice(response.data));
+      dispatch(resultPrice(state, response.data));
+      dispatch(changeCotizador(current + 1));
+    } catch (err) {
+      console.log(err);
+      if (err.response.status === 400) {
+        dispatch(finishLoading(err.response.data));
+        message.error(err.response.data.message);
+        dispatch(finishLoading(err));
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 };
-export const resultPrice = (resultPrice) => ({
+export const resultPrice = (state, resultPrice) => ({
   type: types.formResult,
   payload: {
     ...state,
@@ -64,11 +71,11 @@ export const changeWidth = (state, width) => ({
     width,
   },
 });
-export const changeHeigth = (state, heigth) => ({
+export const changeHeigth = (state, height) => ({
   type: types.formRequest,
   payload: {
     ...state,
-    heigth,
+    height,
   },
 });
 export const changeLength = (state, length) => ({

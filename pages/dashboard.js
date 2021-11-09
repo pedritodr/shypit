@@ -24,8 +24,4 @@ const Dashboard = () => {
   }
 };
 
-Dashboard.getInitialProps = () => {
-  return {};
-};
-
 export default withAuth(Dashboard);

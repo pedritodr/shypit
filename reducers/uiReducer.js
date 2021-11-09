@@ -2,6 +2,7 @@ import { types } from "../types/types";
 
 const stateInitial = {
   loading: false,
+  error: null,
 };
 
 export const uiReducer = (state = stateInitial, action) => {
@@ -9,10 +10,12 @@ export const uiReducer = (state = stateInitial, action) => {
     case types.uiStartLoading:
       return {
         loading: true,
+        error: "none",
       };
     case types.uiFinishLoading:
       return {
         loading: false,
+        error: action.payload.error,
       };
     default:
       return state;

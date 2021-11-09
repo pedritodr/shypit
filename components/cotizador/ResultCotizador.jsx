@@ -1,136 +1,112 @@
-import { Table, Tag, Space, Typography, Row, Col } from "antd";
+import { Table, Typography, Row, Col, message } from "antd";
+import { useSelector, useDispatch } from "react-redux";
+import { finishLoading } from "../../actions/ui";
+import SpinLoading from "../spin/spinLoading";
 import styles from "./ContentCotizador.module.css";
 
 const { Text, Link, Title } = Typography;
 
 export default function ResultCotizador() {
+  const dispatch = useDispatch();
+  const stateFormInicio = useSelector((state) => state.formReqPrice);
+  const { loading } = useSelector((state) => state.ui);
+  const { height, width, origen, destino, weight, length, resultPrice } =
+    stateFormInicio;
+
   const columns = [
     {
       title: "Courier",
-      dataIndex: "name",
-      key: "name",
-      render: (text) => <a>{text}</a>,
+      dataIndex: "original_courier",
+      key: "original_courier",
+      render: (text) => (
+        <b>
+          <p>{text.toUpperCase()}</p>
+        </b>
+      ),
     },
     {
       title: "Tipo de entrega",
-      dataIndex: "age",
-      key: "age",
+      dataIndex: "original_courier",
+      key: "domicilio",
+      render: () => <p>Domicilio</p>,
     },
     {
       title: "Plazo Estimado",
-      dataIndex: "address",
-      key: "address",
+      dataIndex: "days",
+      key: "days",
+      render: (text) => <p>{text > 1 ? text + " dias" : text + " dia"}</p>,
     },
     {
       title: "Peso Equivalente",
-      key: "tags",
-      dataIndex: "tags",
-      render: (tags) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? "geekblue" : "green";
-            if (tag === "loser") {
-              color = "volcano";
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
+      dataIndex: "volumetric_weight",
+      key: "volumetric_weight",
+      render: (text) => <p>{text}</p>,
     },
     {
       title: "Precio Mercado",
-      key: "action",
-      render: (text, record) => (
-        <Space size="middle">
-          <a>Invite {record.name}</a>
-          <a>Delete</a>
-        </Space>
-      ),
+      dataIndex: "price",
+      key: "price",
+      render: (text) => <p>{`$${text}`}</p>,
     },
   ];
 
-  const data = [
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-    },
-    {
-      key: "2",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      age: 32,
-      address: "Sidney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
-    {
-      key: "4",
-      name: "Joe Black",
-      age: 32,
-      address: "Sidney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
-    {
-      key: "5",
-      name: "Joe Black",
-      age: 32,
-      address: "Sidney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
-  ];
+  setTimeout(() => {
+    dispatch(finishLoading());
+  }, 2500);
 
-  return (
-    <>
-      <div style={{ textAlign: "left", paddingLeft: "10px" }}>
-        <Title level={4}>Resultados de tu cotización</Title>
-      </div>
+  if (loading) {
+    return (
+      <>
+        <SpinLoading />
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div style={{ textAlign: "left", paddingLeft: "10px" }}>
+          <Title level={4}>Resultados de tu cotización</Title>
+        </div>
 
-      <Table
-        columns={columns}
-        dataSource={data}
-        pagination={{ position: ["none", "none"] }}
-      />
-      <div style={{ textAlign: "left", paddingTop: "20px" }}>
-        <Text style={{ fontSize: "18px" }} strong>
-          Courier selecionado según{" "}
-        </Text>
-        <Link
-          href="https://ant.design"
-          target="_blank"
-          underline
-          style={{ color: "#000", fontSize: "12px" }}
-          strong
-        >
-          Configuración predeterminada
-        </Link>
-      </div>
+        <Table
+          columns={columns}
+          dataSource={resultPrice.prices}
+          pagination={{ position: ["none", "none"] }}
+        />
+        <div style={{ textAlign: "left", paddingTop: "20px" }}>
+          <Text style={{ fontSize: "18px" }} strong>
+            Courier selecionado según{" "}
+          </Text>
+          <Link
+            underline
+            style={{ color: "#000", fontSize: "12px" }}
+            strong
+            onClick={() => message.info("coming soon")}
+          >
+            Configuración predeterminada
+          </Link>
+        </div>
 
-      <Row className={styles.alertConfirmacion}>
-        <Col span={6} className={styles.contentConfirmacion}>
-          logo
-        </Col>
-        <Col span={6} className={styles.contentConfirmacion}>
-          <Text strong>plaza</Text>
-        </Col>
-        <Col span={6} className={styles.contentConfirmacion}>
-          <Text strong>dias</Text>
-        </Col>
-        <Col span={6} className={styles.contentConfirmacion}>
-          <Text strong>200</Text>
-        </Col>
-      </Row>
-    </>
-  );
+        <Row className={styles.alertConfirmacion}>
+          <Col span={6} className={styles.contentConfirmacion}>
+            <Title level={5}>
+              {resultPrice.lower_price.original_courier.toUpperCase()}
+            </Title>
+          </Col>
+          <Col span={6} className={styles.contentConfirmacion}>
+            <Text strong>Domicilio</Text>
+          </Col>
+          <Col span={6} className={styles.contentConfirmacion}>
+            {resultPrice.lower_price.days > 1 ? (
+              <Text strong> {`${resultPrice.lower_price.days} días`}</Text>
+            ) : (
+              <Text strong> {`${resultPrice.lower_price.days} día`}</Text>
+            )}
+          </Col>
+          <Col span={6} className={styles.contentConfirmacion}>
+            $<Text strong>{resultPrice.lower_price.price}</Text>
+          </Col>
+        </Row>
+      </>
+    );
+  }
 }
