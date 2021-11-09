@@ -2,7 +2,9 @@ import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 
 import { authReducer } from "../reducers/authReducer";
+import { formReqPriceReducer } from "../reducers/FormReqPriceReducer";
 import { loggedReducer } from "../reducers/loggedReducer";
+import { navCotizadorReducer } from "../reducers/navCotizadorReducer";
 import { navReducer } from "../reducers/navReducer";
 import { uiReducer } from "../reducers/uiReducer";
 
@@ -16,6 +18,8 @@ const reducers = combineReducers({
   ui: uiReducer,
   logged: loggedReducer,
   nav: navReducer,
+  navCot: navCotizadorReducer,
+  formReqPrice: formReqPriceReducer,
 });
 
 export const store = createStore(

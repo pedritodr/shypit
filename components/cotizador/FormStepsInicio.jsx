@@ -1,50 +1,75 @@
-import {
-  Form,
-  Input,
-  Button,
-  Radio,
-  Select,
-  Cascader,
-  DatePicker,
-  InputNumber,
-  TreeSelect,
-  Switch,
-  Row,
-  Col,
-  Avatar,
-  OptGroup,
-} from "antd";
+import { Form, Input, Select, InputNumber, Row, Col, message } from "antd";
 const { Option } = Select;
-import { useState } from "react";
 
 import comunas from "../../data/comunas.json";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  changeDestino,
+  changeHeigth,
+  changeLength,
+  changeOrigen,
+  changeWeight,
+  changeWidth,
+} from "../../actions/formReqPrice";
 
 export default function FormStepsInicio() {
-  const [componentSize, setComponentSize] = useState("default");
+  const dispatch = useDispatch();
+  const stateForm = useSelector((state) => state.formReqPrice);
+  const { height, width, origen, destino, weight, length } = stateForm;
 
-  const onFormLayoutChange = ({ size }) => {
-    setComponentSize(size);
+  const handleHeight = (value) => {
+    if (value > 0) {
+      dispatch(changeHeigth(stateForm, value));
+    } else {
+      message.error("La altura es requerida");
+      dispatch(changeWidth(stateForm, ""));
+    }
   };
 
-  function onChange(value) {
-    console.log(`selected ${value}`);
-  }
+  const handleWidth = (value) => {
+    if (value > 0) {
+      dispatch(changeWidth(stateForm, value));
+    } else {
+      message.error("El ancho es requerido");
+      dispatch(changeWidth(stateForm, ""));
+    }
+  };
 
-  function onBlur() {
-    console.log("blur");
-  }
+  const handleOrigen = (value) => {
+    if (destino !== "" && destino === value) {
+      message.error("El origen no puede ser igual al destino");
+      dispatch(changeDestino(stateForm, null));
+    } else {
+      dispatch(changeOrigen(stateForm, value));
+    }
+  };
 
-  function onFocus() {
-    console.log("focus");
-  }
+  const handleWeight = (value) => {
+    if (value > 0) {
+      dispatch(changeWeight(stateForm, value));
+    } else {
+      message.error("El peso es requerido");
+      dispatch(changeWeight(stateForm, ""));
+    }
+  };
 
-  function onSearch(val) {
-    console.log("search:", val);
-  }
+  const handleLength = (value) => {
+    if (value > 0) {
+      dispatch(changeLength(stateForm, value));
+    } else {
+      dispatch(changeLength(stateForm, ""));
+      message.error("El tamaño es requerido");
+    }
+  };
 
-  function handleChange(value) {
-    console.log(value);
-  }
+  const handleDestino = (value) => {
+    if (origen !== "" && origen === value) {
+      message.error("El origen no puede ser igual al destino");
+      dispatch(changeOrigen(stateForm, null));
+    } else {
+      dispatch(changeDestino(stateForm, value));
+    }
+  };
 
   return (
     <>
@@ -56,11 +81,6 @@ export default function FormStepsInicio() {
           span: 18,
         }}
         layout="horizontal"
-        initialValues={{
-          size: componentSize,
-        }}
-        onValuesChange={onFormLayoutChange}
-        size={componentSize}
       >
         <Row>
           <Col span={16} offset={4}>
@@ -72,10 +92,8 @@ export default function FormStepsInicio() {
                     style={{ width: 200 }}
                     placeholder="Selecciona el origen"
                     optionFilterProp="children"
-                    onChange={onChange}
-                    onFocus={onFocus}
-                    onBlur={onBlur}
-                    onSearch={onSearch}
+                    onChange={handleOrigen}
+                    value={origen}
                     filterOption={(input, option) => {
                       if (option.children) {
                         return option.children
@@ -107,10 +125,8 @@ export default function FormStepsInicio() {
                     style={{ width: 200 }}
                     placeholder="Selecciona el destino"
                     optionFilterProp="children"
-                    onChange={onChange}
-                    onFocus={onFocus}
-                    onBlur={onBlur}
-                    onSearch={onSearch}
+                    onChange={handleDestino}
+                    value={destino}
                     filterOption={(input, option) => {
                       if (option.children) {
                         return option.children
@@ -139,24 +155,44 @@ export default function FormStepsInicio() {
             <Row>
               <Col span={12}>
                 <Form.Item label="Alto (cm)" style={{ textAlign: "left" }}>
-                  <InputNumber min={0} />
+                  <InputNumber
+                    min={0}
+                    autoComplete="off"
+                    value={height}
+                    onChange={handleHeight}
+                  />
                 </Form.Item>
               </Col>
               <Col span={12}>
                 <Form.Item label="Ancho (cm)" style={{ textAlign: "left" }}>
-                  <InputNumber min={0} />
+                  <InputNumber
+                    min={0}
+                    autoComplete="off"
+                    value={width}
+                    onChange={handleWidth}
+                  />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={12}>
                 <Form.Item label="Largo (cm)" style={{ textAlign: "left" }}>
-                  <InputNumber min={0} />
+                  <InputNumber
+                    min={0}
+                    autoComplete="off"
+                    value={length}
+                    onChange={handleLength}
+                  />
                 </Form.Item>
               </Col>
               <Col span={12}>
                 <Form.Item label="Peso (kg)" style={{ textAlign: "left" }}>
-                  <InputNumber min={0} />
+                  <InputNumber
+                    min={0}
+                    autoComplete="off"
+                    value={weight}
+                    onChange={handleWeight}
+                  />
                 </Form.Item>
               </Col>
             </Row>

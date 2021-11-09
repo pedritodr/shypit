@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Steps, Button, message, Row, Col } from "antd";
 import styles from "./ContentCotizador.module.css";
 import "antd/dist/antd.css";
 import FormStepsInicio from "./FormStepsInicio";
 import ResultCotizador from "./ResultCotizador";
 import FormStepsFin from "./FormStepsFin";
+import { changeCotizador } from "../../actions/navCot";
+import { startFormReqPrice } from "../../actions/formReqPrice";
 
 export default function ContentCotizador() {
   const { Step } = Steps;
@@ -23,15 +26,47 @@ export default function ContentCotizador() {
       content: <FormStepsFin />,
     },
   ];
-
-  const [current, setCurrent] = useState(0);
-
+  const dispatch = useDispatch();
+  const { current } = useSelector((state) => state.navCot);
+  const stateFormInicio = useSelector((state) => state.formReqPrice);
+  const { height, width, origen, destino, weight, length } = stateFormInicio;
   const next = () => {
-    setCurrent(current + 1);
+    dispatch(changeCotizador(current + 1));
   };
 
   const prev = () => {
-    setCurrent(current - 1);
+    dispatch(changeCotizador(current - 1));
+  };
+  const handleRequestPrice = () => {
+    if (origen === null) {
+      message.error("El origen es requerido");
+    } else if (destino === null) {
+      message.error("El destino es requerido");
+    } else if (height === "") {
+      message.error("La altura es requerida");
+    } else if (width === "") {
+      message.error("El ancho es requerido");
+    } else if (length === "") {
+      message.error("El tamaño es requerido");
+    } else if (weight === "") {
+      message.error("El peso es requerido");
+    } else {
+      const data = JSON.stringify({
+        parcel: {
+          length,
+          width,
+          height,
+          weight,
+          origin_id: origen,
+          destiny_id: destino,
+          type_of_destiny: "domicilio",
+          algorithm: "1",
+          algorithm_days: "2",
+        },
+      });
+      dispatch(startFormReqPrice(data));
+      message.success("perfect");
+    }
   };
   return (
     <>
@@ -44,22 +79,29 @@ export default function ContentCotizador() {
           </Steps>
           <div className={styles.stepsContent}>{steps[current].content}</div>
           <div className={styles.stepsAction}>
-            {current < steps.length - 1 && (
-              <Button type="primary" onClick={() => next()}>
-                Next
+            {current == 0 && (
+              <Button type="primary" onClick={() => handleRequestPrice()}>
+                Consultar precio
               </Button>
             )}
+
+            {current == 1 && (
+              <Button type="primary" onClick={() => next()}>
+                Continuar
+              </Button>
+            )}
+
             {current === steps.length - 1 && (
               <Button
                 type="primary"
                 onClick={() => message.success("Processing complete!")}
               >
-                Done
+                Crear envío
               </Button>
             )}
             {current > 0 && (
               <Button style={{ margin: "0 8px" }} onClick={() => prev()}>
-                Previous
+                Anterior
               </Button>
             )}
           </div>

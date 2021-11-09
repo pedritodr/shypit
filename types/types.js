@@ -7,5 +7,10 @@ export const types = {
   uiStartLoading: "[UI] Start loading",
   uiFinishLoading: "[UI] Finish loading",
 
-  uiNavigation: "[Navigartion] menu",
+  uiNavigation: "[Navigation] Menu",
+
+  uiNavigationCotizador: "[Navigation] Cotizador",
+
+  formRequest: "[Form] Request price",
+  formResult: "[Form] Result price",
 };

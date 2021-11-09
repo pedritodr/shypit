@@ -5,8 +5,7 @@ import {
   LoginOutlined,
   CalculatorOutlined,
 } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeMenu } from "../../actions/nav";
 import { startLogout } from "../../actions/auth";
 
