@@ -8,9 +8,10 @@ import FormStepsInicio from "./FormStepsInicio";
 import ResultCotizador from "./ResultCotizador";
 import FormStepsFin from "./FormStepsFin";
 import { changeCotizador } from "../../actions/navCot";
-import { startFormReqPrice } from "../../actions/formReqPrice";
+import { startFormReqPrice, startReset } from "../../actions/formReqPrice";
 import { finishLoading, startLoading } from "../../actions/ui";
 import Swal from "sweetalert2";
+import { changeMenu } from "../../actions/nav";
 
 export default function ContentCotizador() {
   const { Step } = Steps;
@@ -147,8 +148,11 @@ export default function ContentCotizador() {
           console.log(response);
           Swal.fire("Envío creado correctamente", "", "success");
           router.push("/dashboard");
+          dispatch(changeMenu("inicio"));
           dispatch(changeCotizador(0));
           dispatch(finishLoading());
+          dispatch(startReset());
+          dispatch(changeCotizador(0));
         } catch (err) {
           console.log(err);
           if (err.response.status === 400) {

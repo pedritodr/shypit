@@ -33,6 +33,16 @@ export const formReqPriceReducer = (state = stateInitial, action) => {
         length: action.payload.length,
         resultPrice: action.payload.resultPrice,
       };
+    case types.formReset:
+      return {
+        height: "",
+        width: "",
+        origen: null,
+        destino: null,
+        weight: "",
+        length: "",
+        resultPrice: null,
+      };
     default:
       return state;
   }

@@ -85,3 +85,6 @@ export const changeLength = (state, length) => ({
     length,
   },
 });
+export const startReset = (state, length) => ({
+  type: types.formReset,
+});

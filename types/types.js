@@ -13,4 +13,5 @@ export const types = {
 
   formRequest: "[Form] Request price",
   formResult: "[Form] Result price",
+  formReset: "[Form] Reset",
 };
