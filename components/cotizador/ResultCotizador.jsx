@@ -1,7 +1,7 @@
 import { Table, Typography, Row, Col, message } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { finishLoading } from "../../actions/ui";
-import SpinLoading from "../spin/spinLoading";
+import SpinLoading from "../spin/SpinLoading";
 import styles from "./ContentCotizador.module.css";
 
 const { Text, Link, Title } = Typography;

@@ -2,7 +2,7 @@ import Head from "next/head";
 import "antd/dist/antd.css";
 import { useSelector } from "react-redux";
 import SignupForm from "../components/login/SignupForm";
-import SpinLoading from "../components/spin/spinLoading";
+import SpinLoading from "../components/spin/SpinLoading";
 import withAuthPublic from "../components/withAuthPublic";
 
 const Home = () => {

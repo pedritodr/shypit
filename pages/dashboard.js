@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import ContentDashboard from "../components/dashboard/ContentDashboard";
-import SpinLoading from "../components/spin/spinLoading";
+import SpinLoading from "../components/spin/SpinLoading";
 import withAuth from "../components/withAuth";
 import LayoutApp from "../layouts/LayoutApp";
 
